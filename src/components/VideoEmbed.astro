@@ -1,0 +1,61 @@
+---
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+
+function toEmbedUrl(raw: string): string {
+  // Vimeo
+  if (raw.includes("vimeo.com")) {
+    const match = raw.match(/vimeo\.com\/(\d+)/);
+    if (match) return `https://player.vimeo.com/video/${match[1]}?dnt=1`;
+  }
+  // YouTube watch URL
+  if (raw.includes("youtube.com/watch")) {
+    const id = new URL(raw).searchParams.get("v");
+    if (id) return `https://www.youtube-nocookie.com/embed/${id}`;
+  }
+  // YouTube short URL
+  if (raw.includes("youtu.be/")) {
+    const id = raw.split("youtu.be/")[1]?.split(/[?#]/)[0];
+    if (id) return `https://www.youtube-nocookie.com/embed/${id}`;
+  }
+  // Already an embed URL
+  return raw;
+}
+
+const embedUrl = toEmbedUrl(url);
+---
+
+<div class="video-embed">
+  <iframe
+    src={embedUrl}
+    width="100%"
+    height="100%"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
+</div>
+
+<style>
+  .video-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: var(--r-md, 0.5rem);
+    overflow: hidden;
+    background: var(--surface, #000);
+    margin-bottom: 1.5rem;
+  }
+  .video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

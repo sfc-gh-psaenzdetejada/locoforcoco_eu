@@ -1,0 +1,42 @@
+---
+import { getLocaleFromUrl, defaultLocale } from "@/config/i18n";
+
+const locale = getLocaleFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+
+const otherLocale = locale === "es" ? "en" : "es";
+const otherLabel = otherLocale.toUpperCase();
+
+let otherPath: string;
+if (locale === defaultLocale) {
+  otherPath = `/en${currentPath}`;
+} else {
+  otherPath = currentPath.replace(/^\/en/, "") || "/";
+}
+---
+
+<a class="lang-switch" href={otherPath} aria-label={`Switch to ${otherLocale === "es" ? "Spanish" : "English"}`}>
+  {otherLabel}
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm, 0.25rem);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: all var(--speed, 0.15s) var(--ease, ease);
+  }
+  .lang-switch:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import IssueIndex from "@/components/IssueIndex.astro";
+import PageIntro from "@/components/PageIntro.astro";
+import Pagination from "@/components/Pagination.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import TopicChip from "@/components/TopicChip.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+import { publishedIssues, topics, withTrailingSlash, type Issue } from "@/lib/issues";
+
+const locale = "es";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const issues = publishedIssues(await getCollection("issues"), "es");
+  return paginate(issues, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<Issue>;
+}
+
+const { page } = Astro.props;
+const title = page.currentPage === 1 ? "Todos los videos" : `Todos los videos - Pagina ${page.currentPage}`;
+const prevUrl = withTrailingSlash(page.url.prev);
+const nextUrl = withTrailingSlash(page.url.next);
+---
+
+<BaseLayout
+  title={title}
+  description="Todos los videos de Loco for CoCo, del mas reciente al mas antiguo."
+  prevUrl={prevUrl}
+  nextUrl={nextUrl}
+>
+  <SiteHeader />
+  <main id="content">
+    <div class="container">
+      <PageIntro
+        title="Todos los videos"
+        description="Todos los videos publicados, del mas reciente al mas antiguo."
+        note={`${page.total} ${page.total === 1 ? "video" : "videos"}`}
+      >
+        <div class="chip-row">
+          {topics.map((topic) => <TopicChip topic={topic} />)}
+        </div>
+      </PageIntro>
+    </div>
+
+    <section class="container section--tight" aria-label="Issue archive">
+      <IssueIndex issues={page.data} groupByYear headingLevel="h2" />
+      <Pagination
+        prevUrl={prevUrl}
+        nextUrl={nextUrl}
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+        label="Archive pagination"
+      />
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

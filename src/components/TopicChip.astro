@@ -1,0 +1,31 @@
+---
+import { topicSlug, getTopicMeta, type Topic } from "@/config/topics";
+import { getLocaleFromUrl, localePath } from "@/config/i18n";
+
+interface Props {
+  topic: Topic;
+  linked?: boolean;
+  count?: number;
+  class?: string;
+}
+
+const { topic, linked = true, count, class: className = "" } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const slug = topicSlug(topic);
+const label = getTopicMeta(topic, locale).label;
+const classes = ["chip", className];
+---
+
+{
+  linked ? (
+    <a class:list={classes} data-topic={slug} href={localePath(locale, `/topics/${slug}/`)}>
+      {label}
+      {typeof count === "number" && <span class="chip__count">{count}</span>}
+    </a>
+  ) : (
+    <span class:list={classes} data-topic={slug}>
+      {label}
+      {typeof count === "number" && <span class="chip__count">{count}</span>}
+    </span>
+  )
+}
