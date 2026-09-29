@@ -4,8 +4,8 @@ export const defaultLocale: Locale = "es";
 
 export const ui: Record<Locale, Record<string, string>> = {
   es: {
-    "site.tagline": "Demos rapidos de lo que puedes hacer con Cortex Code",
-    "site.bio": "Videos cortos y al grano sobre Snowflake CoCo, organizados por categoria.",
+    "site.tagline": "Descubre lo que puedes hacer con Cortex Code",
+    "site.bio": "Videos cortos y directos sobre Snowflake CoCo, organizados por categoria.",
     "nav.videos": "Videos",
     "nav.topics": "Categorias",
     "nav.about": "Acerca de",
@@ -35,7 +35,7 @@ export const ui: Record<Locale, Record<string, string>> = {
     "search.placeholder": "Buscar videos...",
   },
   en: {
-    "site.tagline": "Quick demos of what you can do with Cortex Code",
+    "site.tagline": "Discover what you can do with Cortex Code",
     "site.bio": "Short, focused videos about Snowflake CoCo, organized by category.",
     "nav.videos": "Videos",
     "nav.topics": "Categories",

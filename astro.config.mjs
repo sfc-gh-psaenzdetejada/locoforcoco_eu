@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { siteConfig } from "./src/config/site.ts";
 import { codeThemes, codeDefaultColor } from "./src/config/code.ts";
 
-const noindexPages = ["/search/", "/styleguide/"];
+const noindexPages = ["/search/"];
 
 const shikiConfig = /** @type {const} */ ({
   themes: codeThemes,

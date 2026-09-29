@@ -1,18 +1,16 @@
 ---
-import { getLocaleFromUrl, defaultLocale } from "@/config/i18n";
+import { getLocaleFromUrl, defaultLocale, localePath } from "@/config/i18n";
 
 const locale = getLocaleFromUrl(Astro.url);
-const currentPath = Astro.url.pathname;
-
 const otherLocale = locale === "es" ? "en" : "es";
 const otherLabel = otherLocale.toUpperCase();
 
-let otherPath: string;
-if (locale === defaultLocale) {
-  otherPath = `/en${currentPath}`;
-} else {
-  otherPath = currentPath.replace(/^\/en/, "") || "/";
+// Get the bare path (without locale prefix), then rebuild for other locale
+let barePath = Astro.url.pathname;
+if (locale !== defaultLocale) {
+  barePath = barePath.replace(new RegExp(`^/${locale}`), "") || "/";
 }
+const otherPath = localePath(otherLocale, barePath);
 ---
 
 <a class="lang-switch" href={otherPath} aria-label={`Switch to ${otherLocale === "es" ? "Spanish" : "English"}`}>
