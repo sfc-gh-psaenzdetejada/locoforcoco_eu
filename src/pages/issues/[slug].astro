@@ -90,6 +90,7 @@ const structuredData = [issueSchema(issue, absoluteCover), issueBreadcrumbSchema
           </div>
         </header>
 
+        <div style="margin-top:clamp(1.5rem, 3vw, 2.5rem)">
         {data.videoUrl ? (
           <VideoEmbed url={data.videoUrl} />
         ) : (
@@ -118,6 +119,7 @@ const structuredData = [issueSchema(issue, absoluteCover), issueBreadcrumbSchema
             )}
           </figure>
         )}
+        </div>
 
         <div class="issue-body">
           <div class="prose">
