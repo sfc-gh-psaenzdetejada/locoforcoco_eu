@@ -38,14 +38,14 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
     <div class="header-actions">
       <button type="button" class="header-search" data-search-open>
         <Icon name="search" size={15} />
-        <span>Search issues</span>
+        <span>{locale === 'es' ? 'Buscar videos' : 'Search videos'}</span>
         <kbd aria-hidden="true">/</kbd>
       </button>
 
       <button
         type="button"
         class="icon-btn header-search-icon"
-        aria-label="Search issues"
+        aria-label={locale === 'es' ? 'Buscar videos' : 'Search videos'}
         data-search-open
       >
         <Icon name="search" size={18} />
@@ -69,7 +69,7 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
       >
         <Icon name="menu" size={20} class="menu-open" />
         <Icon name="close" size={20} class="menu-close" />
-        <span class="sr-only">Toggle menu</span>
+        <span class="sr-only">{locale === 'es' ? 'Abrir menu' : 'Toggle menu'}</span>
       </button>
     </div>
   </div>
@@ -77,10 +77,10 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
 
 <SiteDrawer />
 
-<dialog class="search-dialog" data-search-dialog aria-label={`Search ${siteConfig.name}`}>
+<dialog class="search-dialog" data-search-dialog data-locale={locale} aria-label={locale === 'es' ? `Buscar en ${siteConfig.name}` : `Search ${siteConfig.name}`}>
   <form class="search-field" action={localePath(locale, "/search/")} method="get" role="search">
     <Icon name="search" size={19} class="t-faint" />
-    <label class="sr-only" for="site-search">Search issues</label>
+    <label class="sr-only" for="site-search">{locale === 'es' ? 'Buscar videos' : 'Search videos'}</label>
     <input
       id="site-search"
       name="q"
@@ -90,11 +90,11 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
       enterkeyhint="search"
       data-search-input
     />
-    <button type="button" class="icon-btn" aria-label="Close search" data-search-close>
+    <button type="button" class="icon-btn" aria-label={locale === 'es' ? 'Cerrar busqueda' : 'Close search'} data-search-close>
       <Icon name="close" size={18} />
     </button>
   </form>
-  <p class="search-status" aria-live="polite" data-search-status>Type to search the archive.</p>
+  <p class="search-status" aria-live="polite" data-search-status>{locale === 'es' ? 'Escribe para buscar en el archivo.' : 'Type to search the archive.'}</p>
   <div class="search-results" data-search-results></div>
 </dialog>
 
@@ -128,6 +128,7 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
   const input = dialog?.querySelector<HTMLInputElement>("[data-search-input]");
   const results = dialog?.querySelector<HTMLElement>("[data-search-results]");
   const status = dialog?.querySelector<HTMLElement>("[data-search-status]");
+  const isEs = dialog?.dataset.locale === "es";
 
   const render = async () => {
     const runtime = window.mailerSearch;
@@ -136,7 +137,9 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
     const query = input.value.trim();
     if (!query) {
       const items = await runtime.load();
-      status.textContent = `Search ${items.length} issues by title, topic, number, or writer.`;
+      status.textContent = isEs
+        ? `Buscar entre ${items.length} videos por titulo, categoria o autor.`
+        : `Search ${items.length} videos by title, topic, or writer.`;
       results.innerHTML = "";
       return;
     }
@@ -145,7 +148,9 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
     /* A slower query resolving after a faster one must not overwrite it. */
     if (input.value.trim() !== query) return;
 
-    status.textContent = `${matches.length} ${matches.length === 1 ? "result" : "results"} for “${query}”.`;
+    status.textContent = isEs
+      ? `${matches.length} ${matches.length === 1 ? "resultado" : "resultados"} para "${query}".`
+      : `${matches.length} ${matches.length === 1 ? "result" : "results"} for "${query}".`;
     results.innerHTML = matches.map(runtime.resultMarkup).join("");
   };
 
