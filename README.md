@@ -1,94 +1,162 @@
-# Mailer - Astro Newsletter Theme
+# Loco for CoCo
 
-[![Mailer theme preview](./preview.webp)](https://mailer.xocoweb.workers.dev/)
+Short video demos of what you can do with [Snowflake Cortex Code](https://docs.snowflake.com/en/user-guide/ui-snowsight-cortex-code) (CoCo), organized by category.
 
-[![Astro 7](https://img.shields.io/badge/Astro-7-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
-[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Configured-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-84cc16?style=for-the-badge)](./LICENSE)
+**Live site:** [https://locoforcoco.eu](https://locoforcoco.eu)
 
-**Live preview:** https://mailer.xocoweb.workers.dev/
+## What is this
 
-Mailer is a free Astro theme for a newsletter with a public archive. Issues are numbered, the archive reads as a numbered index rather than a wall of cards, and the front page is dealt from that archive: the latest issue leads at full width, the next two run as cards, and everything after them falls into the index. Nothing repeats between blocks, and any block with nothing to show hides itself, so a site with three issues and a site with three hundred both look deliberate.
+A bilingual (ES/EN) video site where Solutions Engineers publish short, focused demos of CoCo. Each post embeds a Vimeo video with a written description of what is shown and why it matters.
 
-Content is Markdown or MDX validated by Astro content collections — a missing excerpt or an unknown topic fails the build instead of shipping. Search runs client-side against a statically generated index with no service to sign up for, the signup form posts to any provider that accepts a POST, and site identity, topics, and writers come from three config files, so the whole publication can be renamed without touching a component.
+Categories: **Governance**, **Engineering**, **AI**, **FinOps**, **Data Quality**, **DevOps**.
 
-## Features
+## How to add a new video
 
-- Numbered issues in Markdown or MDX, validated by Astro content collections — issue number, title, excerpt, topic, date, writer, cover with alt text and photo credit, featured and draft flags
-- A front page assembled from the archive with no repeats between blocks: a masthead with the signup form, a full-width lead issue, two recent issues as cards, a numbered index of back issues, a topic grid, and a writer row, every block hiding itself when it has nothing to show
-- An archive that reads as a numbered index grouped by year, with the issue number in its own column, so the shape of a publication is legible at a glance
-- Issue pages with a fixed reading column, a reading-progress bar, a writer note, and previous/next issue navigation
-- Six blocks for the issue body handed to MDX with no import needed — callouts in six tones, toggles, bookmark cards that fill themselves in from the linked page's Open Graph tags at build time, an audio card, a file download, and a figure with a caption, a linked photo credit, and an optional wide break-out past the reading column
-- A lightbox on every issue with arrow keys, swipe, a counter, and neighbours preloaded, wired up at runtime so plain Markdown images get it too
-- A styleguide page showing every block in the reading column, with the props each one takes
-- A provider-neutral signup form that posts to any endpoint — Buttondown, Kit, Mailchimp, Listmonk, your own handler — and renders disabled until it is configured, so a half-finished setup never silently eats an address
-- Client-side search over a statically generated JSON index with no service and no API key, shared by a header dialog (`Ctrl`/`Cmd` `K`) and a results page whose query lives in the URL
-- Issue, archive, topic, topic index, writer, writer index, search, about, privacy, styleguide, and 404 pages, with archive, topic, and writer paginated through one index component
-- A share card with eleven targets, a long tail behind "More", and a copy-link field, handing off to the device's own share sheet where there is one
-- A header that gets out of the way on the way down the page and returns on the way up, with a full-width mobile drawer below 56rem carrying trapped focus and Escape
-- One feed at `/rss.xml` carrying full issue content rendered through Astro's container, with summary-only feeds and the item cap one setting each
-- Read time counted from the issue body at build time, and drafts excluded from every listing, feed, and search index
-- Light and dark syntax-highlighted code blocks, styled lists, blockquotes and figures, and wide tables given their own scroll frame instead of dragging the page sideways
-- Site identity, SEO defaults, locale, reading speed, cadence, editor byline, socials and navigation in `src/config/site.ts`; topics in `src/config/topics.ts`; writer portraits and bios in `src/config/writers.ts`
-- Canonical URLs, sitemap, RSS, `robots.txt`, Open Graph, Twitter/X cards, and JSON-LD — `BlogPosting` with issue number, word count and read time, a `BreadcrumbList` on every issue, and `WebSite` with a search action — plus share cards cropped from each cover at build time
-- Static output with no framework islands to hydrate; JavaScript only for search, the menu, theme switching, sharing, the lightbox, and the progress bar
-- Responsive Astro images with Sharp, eager loading limited to above-the-fold covers, and one self-hosted variable typeface with no external font requests
-- Skip link, landmarks, labelled controls, visible focus states, one tab stop per index row, and full `prefers-reduced-motion` support
-- System-aware light and dark modes with a saved reader preference
+### 1. Upload your video to Vimeo
 
-## Tech Stack
+- Upload at [vimeo.com](https://vimeo.com)
+- In video settings > Embed > restrict embeds to `locoforcoco.eu`
+- Copy the video URL (e.g., `https://vimeo.com/987654321`)
 
-- Astro 7
-- Tailwind CSS 4 via the Vite plugin
-- Vite 8
+### 2. Create the post folder
+
+```
+src/content/issues/
+└── NNN-your-slug/
+    ├── index.mdx      <- post content
+    └── cover.png      <- thumbnail (16:9, ideally 1600x900px)
+```
+
+Pick a sequential issue number and a descriptive slug. The slug becomes the URL.
+
+### 3. Write the post
+
+Create `index.mdx` with this template:
+
+```yaml
+---
+issue: 5                              # sequential number (unique per locale)
+title: "Your video title"
+excerpt: "One or two sentences for listings and SEO."
+topic: "Engineering"                  # one of: Governance, Engineering, AI, FinOps, Data-Quality, DevOps
+date: 2026-10-15                      # publication date
+author:
+  name: "Your Name"
+  role: "Solutions Engineer"
+cover:
+  src: "./cover.png"
+  alt: "Description of the cover image"
+videoUrl: "https://vimeo.com/987654321"
+locale: "es"                          # "es" for Spanish, "en" for English
+featured: false                       # true = pin to homepage hero
+draft: false                          # true = hide while working on it
+---
+
+Description of what the video shows, in Markdown.
+
+## What you will learn
+
+- First point
+- Second point
+
+## Benefits
+
+Why this matters for the viewer.
+```
+
+### 4. Bilingual posts
+
+Spanish and English are separate posts with different slugs:
+
+```
+src/content/issues/
+├── 005-analisis-costes/       <- locale: "es"  -> locoforcoco.eu/issues/005-analisis-costes/
+└── 006-cost-analysis/         <- locale: "en"  -> locoforcoco.eu/en/issues/006-cost-analysis/
+```
+
+They don't need to be translations of each other. You can have posts in only one language.
+
+- `locale: "es"` posts appear on the Spanish site (`/`)
+- `locale: "en"` posts appear on the English site (`/en/`)
+
+### 5. Push to deploy
+
+```bash
+git add .
+git commit -m "Add: your video title"
+git push
+```
+
+GitHub Actions builds and deploys automatically. Live in ~1 minute.
+
+## Frontmatter reference
+
+| Field | Required | Values |
+|---|---|---|
+| `issue` | Yes | Sequential integer |
+| `title` | Yes | Post title |
+| `excerpt` | Yes | 1-2 sentence summary |
+| `topic` | Yes | `Governance`, `Engineering`, `AI`, `FinOps`, `Data-Quality`, `DevOps` |
+| `date` | Yes | `YYYY-MM-DD` |
+| `author.name` | Yes | Your full name |
+| `author.role` | Yes | Your role |
+| `cover.src` | Yes | Relative path to image (e.g., `"./cover.png"`) |
+| `cover.alt` | Yes | Image alt text |
+| `videoUrl` | No | Vimeo or YouTube URL |
+| `locale` | Yes | `"es"` or `"en"` |
+| `featured` | No | `true` pins to homepage hero |
+| `draft` | No | `true` hides from all pages |
+
+## Adding a new category
+
+Edit `src/config/topics.ts`:
+
+1. Add the topic name to the `topics` array
+2. Add an entry in both `es` and `en` in `topicMeta`
+
+The topic page, navigation, and footer update automatically.
+
+## Adding a new author
+
+Edit `src/config/writers.ts` and add an entry keyed by the exact `author.name` you use in frontmatter. If no entry exists, the site falls back to a monogram avatar.
+
+## Local development
+
+```bash
+npm install          # install dependencies
+npm run dev          # dev server at localhost:4321
+npm run build        # production build to dist/
+npm run preview      # preview production build locally
+```
+
+Requires Node.js 22+.
+
+## Project structure
+
+```
+src/
+├── config/
+│   ├── i18n.ts          # UI translations (ES/EN)
+│   ├── site.ts          # site identity, navigation
+│   ├── topics.ts        # categories with bilingual labels
+│   └── writers.ts       # author profiles
+├── content/
+│   └── issues/          # video posts (one folder per post)
+├── components/          # Astro components
+├── pages/
+│   ├── index.astro      # Spanish homepage
+│   ├── archive/         # Spanish archive
+│   ├── topics/          # Spanish topic pages
+│   ├── en/              # English pages (mirror of root)
+│   └── ...
+└── layouts/
+    └── BaseLayout.astro # shared HTML shell
+```
+
+## Tech stack
+
+- [Astro 7](https://astro.build/) with native i18n routing
+- [Tailwind CSS 4](https://tailwindcss.com/)
 - TypeScript
-- Astro content collections
-- `@astrojs/sitemap` and `@astrojs/rss`
-- Sharp for image processing
-
-## Requirements
-
-- Node.js `22.12.0` or newer
-- npm
-
-## Getting Started
-
-```bash
-npm install
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
-Preview the production build locally:
-
-```bash
-npm run preview
-```
-
-## Customization
-
-See [CUSTOMIZATION.md](./CUSTOMIZATION.md) for site settings, topics, writers, the signup form, frontmatter, images and the lightbox, the blocks an issue can carry, sharing, pages, search, fonts, and theme tokens.
-
-## Content
-
-Issues live in [src/content/issues](./src/content/issues). Each issue is a folder with an `index.md` (or `index.mdx`) and a `cover.jpg`. Frontmatter is validated by the schema in [src/content.config.ts](./src/content.config.ts).
-
-The bundled demo images are gradients from [Pexels](https://www.pexels.com/) under the Pexels License; each issue credits its photographer in frontmatter. Replace them with your own imagery before publishing.
-
-Writer portraits live in [src/config/writers.ts](./src/config/writers.ts), keyed by the `author.name` used in issue frontmatter, with the images in `src/assets/writers`. Names with no entry fall back to a monogram avatar. The bundled portraits are Unsplash placeholders — the people photographed have no connection to these fictional bylines, so swap in photos of your real contributors before publishing.
-
-## Support
-
-Mailer is free and provided as-is. Bug reports and questions are welcome as GitHub issues; custom
-design and feature work is not included.
-
-## License
-
-MIT — free for personal and commercial projects. See [LICENSE](./LICENSE), which also lists the
-licenses of the bundled fonts, icons, and demo images.
+- Deployed via GitHub Actions to GitHub Pages
+- DNS via AWS Route 53
