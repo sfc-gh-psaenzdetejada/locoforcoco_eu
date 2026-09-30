@@ -1,5 +1,6 @@
 ---
 import Icon from "@/components/ui/Icon.astro";
+import { getLocaleFromUrl } from "@/config/i18n";
 
 interface Props {
   title: string;
@@ -10,7 +11,9 @@ interface Props {
   headingLevel?: "h2" | "h3";
 }
 
-const { title, id, note, href, linkLabel = "See all", headingLevel: Heading = "h2" } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const defaultLabel = locale === "es" ? "Ver todas" : "See all";
+const { title, id, note, href, linkLabel = defaultLabel, headingLevel: Heading = "h2" } = Astro.props;
 ---
 
 <div class="head">
