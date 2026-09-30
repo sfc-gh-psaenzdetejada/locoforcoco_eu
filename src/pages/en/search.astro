@@ -7,16 +7,16 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { siteConfig } from "@/config/site";
 ---
 
-<BaseLayout title="Buscar" description={`Buscar en el archivo de ${siteConfig.name}.`} noindex>
+<BaseLayout title="Search" description={`Search the ${siteConfig.name} archive.`} noindex>
   <SiteHeader />
   <main id="content">
     <div class="container">
       <PageIntro
-        title="Buscar"
-        description="Busca videos por titulo, categoria o autor."
+        title="Search"
+        description="Search videos by title, category, or writer."
       >
         <form class="search-page-form" role="search" data-page-search>
-          <label class="sr-only" for="search-query">Buscar videos</label>
+          <label class="sr-only" for="search-query">Search videos</label>
           <div class="field">
             <input
               id="search-query"
@@ -31,14 +31,14 @@ import { siteConfig } from "@/config/site";
           </div>
           <button type="submit" class="btn">
             <Icon name="search" size={15} />
-            Buscar
+            Search
           </button>
         </form>
       </PageIntro>
     </div>
 
-    <section class="container section--tight" aria-label="Resultados de busqueda">
-      <p class="t-meta" role="status" aria-live="polite" data-page-status>Cargando el archivo...</p>
+    <section class="container section--tight" aria-label="Search results">
+      <p class="t-meta" role="status" aria-live="polite" data-page-status>Loading the archive...</p>
       <div data-page-results></div>
     </section>
 
@@ -66,17 +66,17 @@ import { siteConfig } from "@/config/site";
         const render = async (query) => {
           if (!query) {
             const items = await runtime.load();
-            status.textContent = "Buscar entre " + items.length + " videos.";
+            status.textContent = "Search " + items.length + " videos.";
             results.innerHTML = "";
             return;
           }
 
           const matches = await runtime.search(query);
           status.textContent =
-            matches.length + (matches.length === 1 ? " resultado para " : " resultados para ") + query + ".";
+            matches.length + (matches.length === 1 ? " result for " : " results for ") + query + ".";
           results.innerHTML = matches.length
             ? '<div class="index">' + matches.map(rowMarkup).join("") + "</div>"
-            : '<p class="t-body t-dim">No se encontraron resultados. Prueba con una categoria, un autor o un numero de video.</p>';
+            : '<p class="t-body t-dim">Nothing matched. Try a category, a writer, or a video number.</p>';
         };
 
         const sync = (query, replace) => {

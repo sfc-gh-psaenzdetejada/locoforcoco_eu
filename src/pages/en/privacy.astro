@@ -1,0 +1,43 @@
+---
+import PageIntro from "@/components/PageIntro.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+---
+
+<BaseLayout title="Privacy" description={`Privacy policy for ${siteConfig.name}.`}>
+  <SiteHeader />
+  <main id="content">
+    <div class="reading">
+      <PageIntro
+        title="Privacy"
+        description="How we handle your data when you visit this site."
+      />
+    </div>
+
+    <section class="reading section--tight">
+      <div class="prose">
+        <h2>What is collected</h2>
+        <p>
+          This site is static and uses no cookies or third-party scripts. No personal data
+          is collected while browsing. Videos are loaded from Vimeo, which may set its own
+          cookies according to its privacy policy.
+        </p>
+
+        <h2>Analytics</h2>
+        <p>
+          No analytics tools are installed. We do not track visits, clicks, or
+          browsing behavior.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          For any privacy questions, write to{" "}
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -9,47 +9,47 @@ import { siteConfig } from "@/config/site";
 import { writerBio } from "@/config/writers";
 import { allWriters, formatDate, publishedIssues, writerSlug } from "@/lib/issues";
 
-const issues = publishedIssues(await getCollection("issues"), "es");
+const issues = publishedIssues(await getCollection("issues"), "en");
 const editor = allWriters(issues).find((writer) => writer.name === siteConfig.editor.name);
 const first = issues.at(-1);
 ---
 
-<BaseLayout title="Acerca de" description={`Que es ${siteConfig.name}, quien lo hace y para que.`}>
+<BaseLayout title="About" description={`What ${siteConfig.name} is, who makes it, and why.`}>
   <SiteHeader />
   <main id="content">
     <div class="container">
       <PageIntro
-        title={`Acerca de ${siteConfig.name}`}
-        description="Videos cortos y al grano sobre Snowflake Cortex Code."
-        note={first ? `Publicando desde ${formatDate(first.data.date, "long", "es")}` : undefined}
+        title={`About ${siteConfig.name}`}
+        description="Short, focused video demos of Snowflake Cortex Code."
+        note={first ? `Publishing since ${formatDate(first.data.date, "long", "en")}` : undefined}
       />
     </div>
 
     <section class="reading section">
       <div class="prose">
-        <h2>Que es esto</h2>
+        <h2>What is this</h2>
         <p>
-          {siteConfig.name} es una coleccion de videos cortos que muestran lo que puedes hacer con
-          Cortex Code (CoCo), el IDE de Snowflake con IA integrada. Cada video se centra en una
-          tarea concreta: una query, una funcion de AI, un analisis de costes, una politica de
-          seguridad — y muestra como resolverla paso a paso.
+          {siteConfig.name} is a collection of short videos showing what you can do with
+          Cortex Code (CoCo), Snowflake's AI-powered IDE. Each video focuses on a single
+          task — a query, an AI function, a cost analysis, a security policy — and walks
+          through it step by step.
         </p>
         <p>
-          Los videos estan organizados por categorias (Engineering, AI, FinOps, Governanza...)
-          para que encuentres rapidamente lo que necesitas.
+          Videos are organized by category (Engineering, AI, FinOps, Governance...)
+          so you can quickly find what you need.
         </p>
 
-        <h2>Para quien es</h2>
+        <h2>Who is it for</h2>
         <ul>
-          <li>Data Engineers y analistas que quieren aprender CoCo de forma practica.</li>
-          <li>Solutions Engineers que buscan demos rapidas para compartir con clientes.</li>
-          <li>Cualquiera con curiosidad por lo que puede hacer Snowflake con IA.</li>
+          <li>Data Engineers and analysts who want to learn CoCo hands-on.</li>
+          <li>Solutions Engineers looking for quick demos to share with customers.</li>
+          <li>Anyone curious about what Snowflake can do with AI.</li>
         </ul>
 
-        <h2>Quien lo hace</h2>
+        <h2>Who makes it</h2>
         <p>
-          Este sitio esta mantenido por Pablo Saenz de Tejada, Solutions Engineer en Snowflake.
-          Los videos muestran flujos reales de trabajo con CoCo.
+          This site is maintained by Pablo Saenz de Tejada, Solutions Engineer at Snowflake.
+          The videos show real workflows with CoCo.
         </p>
       </div>
     </section>
@@ -60,7 +60,7 @@ const first = issues.at(-1);
           <h2 class="t-h3" id="editor-title" style="margin-bottom:1.25rem">
             {siteConfig.editor.title}
           </h2>
-          <a class="writer-card" href={`/writers/${writerSlug(editor.name)}/`}>
+          <a class="writer-card" href={`/en/writers/${writerSlug(editor.name)}/`}>
             <Avatar name={editor.name} size="lg" />
             <span class="stack" style="gap:0.3rem">
               <span class="t-h4">{editor.name}</span>
@@ -74,7 +74,7 @@ const first = issues.at(-1);
 
     <section class="reading section--tight">
       <p class="t-body t-dim">
-        Preguntas o sugerencias? Escribe a{" "}
+        Questions or suggestions? Write to{" "}
         <a class="link" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
       </p>
     </section>
