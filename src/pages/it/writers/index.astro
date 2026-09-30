@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import PageIntro from "@/components/PageIntro.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import WriterCard from "@/components/WriterCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+import { allWriters, publishedIssues } from "@/lib/issues";
+
+const issues = publishedIssues(await getCollection("issues"), "it");
+const writers = allWriters(issues);
+---
+
+<BaseLayout title="Autori" description={`Chi crea i video di ${siteConfig.name}.`}>
+  <SiteHeader />
+  <main id="content">
+    <div class="container">
+      <PageIntro
+        title="Autori"
+        description="Chi crea i video per questo sito."
+        note={`${writers.length} ${writers.length === 1 ? "autore" : "autori"}`}
+      />
+    </div>
+
+    <section class="container section--tight" aria-label="Autori">
+      <div class="writer-grid">
+        {writers.map((writer) => <WriterCard writer={writer} showBio />)}
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

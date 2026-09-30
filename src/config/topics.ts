@@ -28,6 +28,14 @@ export const topicMeta: Record<Locale, Record<Topic, TopicInfo>> = {
     "Data-Quality": { label: "Data Quality", summary: "Data quality, DMFs, and monitoring." },
     DevOps: { label: "DevOps", summary: "CI/CD, Git, deployments, and automation." },
   },
+  it: {
+    Governance: { label: "Governance", summary: "Controllo, sicurezza e gestione dei dati in Snowflake." },
+    Engineering: { label: "Engineering", summary: "Pipeline, SQL avanzato e best practice." },
+    AI: { label: "AI", summary: "Cortex AI, modelli e funzioni intelligenti." },
+    FinOps: { label: "FinOps", summary: "Costi, crediti e ottimizzazione dei consumi." },
+    "Data-Quality": { label: "Data Quality", summary: "Qualita dei dati, DMF e monitoraggio." },
+    DevOps: { label: "DevOps", summary: "CI/CD, Git, deploy e automazione." },
+  },
 };
 
 export function getTopicMeta(topic: Topic, locale: Locale): TopicInfo {

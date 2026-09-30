@@ -109,7 +109,8 @@ export const readMinutes = (issue: Issue) =>
   Math.max(1, Math.round(wordCount(issue) / siteConfig.wordsPerMinute));
 
 export const formatDate = (date: Date, style: "short" | "long" = "short", locale?: Locale) => {
-  const dateLocale = locale === "en" ? "en-US" : "es-ES";
+  const dateLocales: Record<string, string> = { es: "es-ES", en: "en-US", it: "it-IT" };
+  const dateLocale = dateLocales[locale ?? "es"] ?? "es-ES";
   return new Intl.DateTimeFormat(dateLocale, {
     month: style === "short" ? "short" : "long",
     day: "numeric",
@@ -118,7 +119,8 @@ export const formatDate = (date: Date, style: "short" | "long" = "short", locale
 };
 
 export const formatYear = (date: Date, locale?: Locale) => {
-  const dateLocale = locale === "en" ? "en-US" : "es-ES";
+  const dateLocales: Record<string, string> = { es: "es-ES", en: "en-US", it: "it-IT" };
+  const dateLocale = dateLocales[locale ?? "es"] ?? "es-ES";
   return new Intl.DateTimeFormat(dateLocale, { year: "numeric" }).format(date);
 };
 

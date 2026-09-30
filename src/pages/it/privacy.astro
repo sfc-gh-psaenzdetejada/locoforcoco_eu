@@ -1,0 +1,43 @@
+---
+import PageIntro from "@/components/PageIntro.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+---
+
+<BaseLayout title="Privacy" description={`Informativa sulla privacy di ${siteConfig.name}.`}>
+  <SiteHeader />
+  <main id="content">
+    <div class="reading">
+      <PageIntro
+        title="Privacy"
+        description="Come trattiamo i tuoi dati quando visiti questo sito."
+      />
+    </div>
+
+    <section class="reading section--tight">
+      <div class="prose">
+        <h2>Quali dati raccogliamo</h2>
+        <p>
+          Questo sito e statico e non utilizza cookie ne script di terze parti. Durante la
+          navigazione non viene raccolto alcun dato personale. I video vengono caricati da Vimeo,
+          che potrebbe impostare i propri cookie secondo la sua informativa sulla privacy.
+        </p>
+
+        <h2>Statistiche</h2>
+        <p>
+          Non e installato alcuno strumento di analisi. Non tracciamo visite, clic o
+          comportamenti di navigazione.
+        </p>
+
+        <h2>Contatti</h2>
+        <p>
+          Per qualsiasi domanda sulla privacy, scrivi a{" "}
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

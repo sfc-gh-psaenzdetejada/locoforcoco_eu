@@ -53,32 +53,44 @@ export function topicNavigation(locale: Locale) {
 }
 
 export function primaryNavigation(locale: Locale) {
+  const labels: Record<Locale, { videos: string; topics: string; about: string }> = {
+    es: { videos: "Videos", topics: "Categorias", about: "Acerca de" },
+    en: { videos: "Videos", topics: "Categories", about: "About" },
+    it: { videos: "Video", topics: "Categorie", about: "Chi siamo" },
+  };
+  const l = labels[locale];
   return [
-    { label: locale === "es" ? "Videos" : "Videos", href: localePath(locale, "/archive/") },
-    { label: locale === "es" ? "Categorias" : "Categories", href: localePath(locale, "/topics/") },
-    { label: locale === "es" ? "Acerca de" : "About", href: localePath(locale, "/about/") },
+    { label: l.videos, href: localePath(locale, "/archive/") },
+    { label: l.topics, href: localePath(locale, "/topics/") },
+    { label: l.about, href: localePath(locale, "/about/") },
   ];
 }
 
 export function footerNavigation(locale: Locale) {
+  const labels: Record<Locale, { watch: string; allVideos: string; topics: string; search: string; about: string; privacy: string }> = {
+    es: { watch: "Ver", allVideos: "Todos los videos", topics: "Categorias", search: "Buscar", about: "Acerca de", privacy: "Privacidad" },
+    en: { watch: "Watch", allVideos: "All videos", topics: "Categories", search: "Search", about: "About", privacy: "Privacy" },
+    it: { watch: "Guarda", allVideos: "Tutti i video", topics: "Categorie", search: "Cerca", about: "Chi siamo", privacy: "Privacy" },
+  };
+  const l = labels[locale];
   return [
     {
-      title: locale === "es" ? "Ver" : "Watch",
+      title: l.watch,
       links: [
-        { label: locale === "es" ? "Todos los videos" : "All videos", href: localePath(locale, "/archive/") },
-        { label: locale === "es" ? "Categorias" : "Categories", href: localePath(locale, "/topics/") },
-        { label: locale === "es" ? "Buscar" : "Search", href: localePath(locale, "/search/") },
+        { label: l.allVideos, href: localePath(locale, "/archive/") },
+        { label: l.topics, href: localePath(locale, "/topics/") },
+        { label: l.search, href: localePath(locale, "/search/") },
       ],
     },
     {
-      title: locale === "es" ? "Categorias" : "Categories",
+      title: l.topics,
       links: topicNavigation(locale),
     },
     {
       title: "Loco for CoCo",
       links: [
-        { label: locale === "es" ? "Acerca de" : "About", href: localePath(locale, "/about/") },
-        { label: locale === "es" ? "Privacidad" : "Privacy", href: localePath(locale, "/privacy/") },
+        { label: l.about, href: localePath(locale, "/about/") },
+        { label: l.privacy, href: localePath(locale, "/privacy/") },
         { label: "RSS", href: "/rss.xml" },
       ],
     },

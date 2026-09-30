@@ -1,0 +1,83 @@
+---
+import { getCollection } from "astro:content";
+import PageIntro from "@/components/PageIntro.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import Avatar from "@/components/ui/Avatar.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+import { writerBio } from "@/config/writers";
+import { allWriters, formatDate, publishedIssues, writerSlug } from "@/lib/issues";
+
+const issues = publishedIssues(await getCollection("issues"), "it");
+const editor = allWriters(issues).find((writer) => writer.name === siteConfig.editor.name);
+const first = issues.at(-1);
+---
+
+<BaseLayout title="Chi siamo" description={`Che cos'e ${siteConfig.name}, chi lo fa e perche.`}>
+  <SiteHeader />
+  <main id="content">
+    <div class="container">
+      <PageIntro
+        title="Chi siamo"
+        description="Brevi video dimostrativi di Snowflake Cortex Code."
+        note={first ? `Pubblichiamo dal ${formatDate(first.data.date, "long", "it")}` : undefined}
+      />
+    </div>
+
+    <section class="reading section">
+      <div class="prose">
+        <h2>Che cos'e</h2>
+        <p>
+          {siteConfig.name} e una raccolta di brevi video che mostrano cosa puoi fare con
+          Cortex Code (CoCo), l'IDE di Snowflake basato sull'intelligenza artificiale. Ogni video
+          si concentra su un singolo compito — una query, una funzione AI, un'analisi dei costi,
+          una policy di sicurezza — e lo illustra passo dopo passo.
+        </p>
+        <p>
+          I video sono organizzati per categoria (Engineering, AI, FinOps, Governance...)
+          cosi puoi trovare rapidamente quello che ti serve.
+        </p>
+
+        <h2>Per chi e</h2>
+        <ul>
+          <li>Data Engineer e analisti che vogliono imparare CoCo in modo pratico.</li>
+          <li>Solutions Engineer che cercano demo rapide da condividere con i clienti.</li>
+          <li>Chiunque sia curioso di scoprire cosa puo fare Snowflake con l'AI.</li>
+        </ul>
+
+        <h2>Chi lo fa</h2>
+        <p>
+          Questo sito e curato da Pablo Saenz de Tejada, Solutions Engineer di Snowflake.
+          I video mostrano flussi di lavoro reali con CoCo.
+        </p>
+      </div>
+    </section>
+
+    {
+      editor && (
+        <section class="reading section--tight" aria-labelledby="editor-title">
+          <h2 class="t-h3" id="editor-title" style="margin-bottom:1.25rem">
+            {siteConfig.editor.title}
+          </h2>
+          <a class="writer-card" href={`/it/writers/${writerSlug(editor.name)}/`}>
+            <Avatar name={editor.name} size="lg" />
+            <span class="stack" style="gap:0.3rem">
+              <span class="t-h4">{editor.name}</span>
+              <span class="t-meta">{editor.role}</span>
+              <span class="t-small t-dim" style="margin-top:0.35rem">{writerBio(editor.name)}</span>
+            </span>
+          </a>
+        </section>
+      )
+    }
+
+    <section class="reading section--tight">
+      <p class="t-body t-dim">
+        Domande o suggerimenti? Scrivi a{" "}
+        <a class="link" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+      </p>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

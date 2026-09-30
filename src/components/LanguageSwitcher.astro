@@ -1,29 +1,45 @@
 ---
-import { getLocaleFromUrl, defaultLocale, localePath } from "@/config/i18n";
+import { getLocaleFromUrl, defaultLocale, localePath, locales } from "@/config/i18n";
 
 const locale = getLocaleFromUrl(Astro.url);
-const otherLocale = locale === "es" ? "en" : "es";
-const otherLabel = otherLocale.toUpperCase();
 
-// Get the bare path (without locale prefix), then rebuild for other locale
+// Strip locale prefix to get the bare path
 let barePath = Astro.url.pathname;
 if (locale !== defaultLocale) {
   barePath = barePath.replace(new RegExp(`^/${locale}`), "") || "/";
 }
-const otherPath = localePath(otherLocale, barePath);
+
+const langNames: Record<string, string> = { es: "ES", en: "EN", it: "IT" };
+const otherLocales = locales.filter((l) => l !== locale);
 ---
 
-<a class="lang-switch" href={otherPath} aria-label={`Switch to ${otherLocale === "es" ? "Spanish" : "English"}`}>
-  {otherLabel}
-</a>
+<div class="lang-switcher">
+  <span class="lang-current">{langNames[locale]}</span>
+  {otherLocales.map((l) => (
+    <a class="lang-switch" href={localePath(l, barePath)}>
+      {langNames[l]}
+    </a>
+  ))}
+</div>
 
 <style>
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .lang-current {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    padding: 0.2rem 0.35rem;
+  }
   .lang-switch {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 0.35rem;
     border: 1px solid var(--line);
     border-radius: var(--r-sm, 0.25rem);
     font-size: 0.75rem;

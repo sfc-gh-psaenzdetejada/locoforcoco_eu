@@ -1,4 +1,4 @@
-export const locales = ["es", "en"] as const;
+export const locales = ["es", "en", "it"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "es";
 
@@ -64,6 +64,37 @@ export const ui: Record<Locale, Record<string, string>> = {
     "footer.topics": "Categories",
     "footer.site": "Loco for CoCo",
     "search.placeholder": "Search videos...",
+  },
+  it: {
+    "site.tagline": "Scopri cosa puoi fare con Cortex Code",
+    "site.bio": "Video brevi e mirati su Snowflake CoCo, organizzati per categoria.",
+    "nav.videos": "Video",
+    "nav.topics": "Categorie",
+    "nav.about": "Chi siamo",
+    "nav.search": "Cerca",
+    "nav.archive": "Archivio",
+    "page.archive.title": "Tutti i video",
+    "page.archive.description": "Tutti i video pubblicati, dal piu recente al piu vecchio.",
+    "page.topics.title": "Categorie",
+    "issue.readThis": "Guarda questo video",
+    "issue.latest": "Ultimo video",
+    "issue.featured": "In evidenza",
+    "issue.minRead": "min di lettura",
+    "issue.issues": "video",
+    "issue.issue": "video",
+    "issue.backIssues": "Altri video",
+    "issue.alsoRecently": "Anche di recente",
+    "issue.allIssues": "Tutti i video",
+    "issue.fullArchive": "Archivio completo",
+    "issue.keepReading": "Continua a guardare",
+    "issue.readByTopic": "Sfoglia per categoria",
+    "issue.previous": "Precedente",
+    "issue.next": "Successivo",
+    "issue.no": "Video N.",
+    "footer.read": "Guarda",
+    "footer.topics": "Categorie",
+    "footer.site": "Loco for CoCo",
+    "search.placeholder": "Cerca video...",
   },
 };
 

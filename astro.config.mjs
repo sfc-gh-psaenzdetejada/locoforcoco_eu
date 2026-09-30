@@ -16,13 +16,14 @@ const shikiConfig = /** @type {const} */ ({
 export default defineConfig({
   site: siteConfig.siteUrl,
   i18n: {
-    locales: ["es", "en"],
+    locales: ["es", "en", "it"],
     defaultLocale: "es",
     routing: {
       prefixDefaultLocale: false,
     },
     fallback: {
       en: "es",
+      it: "es",
     },
   },
   integrations: [

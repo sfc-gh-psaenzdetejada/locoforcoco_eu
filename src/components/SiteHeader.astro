@@ -8,6 +8,11 @@ import { getLocaleFromUrl, localePath } from "@/config/i18n";
 
 const locale = getLocaleFromUrl(Astro.url);
 const nav = primaryNavigation(locale);
+const searchLabel = { es: 'Buscar videos', en: 'Search videos', it: 'Cerca video' }[locale];
+const menuLabel = { es: 'Abrir menu', en: 'Toggle menu', it: 'Apri menu' }[locale];
+const searchPlaceholder = { es: 'Buscar videos...', en: 'Search videos...', it: 'Cerca video...' }[locale];
+const closeLabel = { es: 'Cerrar busqueda', en: 'Close search', it: 'Chiudi ricerca' }[locale];
+const searchHint = { es: 'Escribe para buscar en el archivo.', en: 'Type to search the archive.', it: 'Scrivi per cercare nell\'archivio.' }[locale];
 
 /**
  * Wordmark, the routes that matter, search, colour mode, and the signup
@@ -38,14 +43,14 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
     <div class="header-actions">
       <button type="button" class="header-search" data-search-open>
         <Icon name="search" size={15} />
-        <span>{locale === 'es' ? 'Buscar videos' : 'Search videos'}</span>
+        <span>{searchLabel}</span>
         <kbd aria-hidden="true">/</kbd>
       </button>
 
       <button
         type="button"
         class="icon-btn header-search-icon"
-        aria-label={locale === 'es' ? 'Buscar videos' : 'Search videos'}
+        aria-label={searchLabel}
         data-search-open
       >
         <Icon name="search" size={18} />
@@ -69,7 +74,7 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
       >
         <Icon name="menu" size={20} class="menu-open" />
         <Icon name="close" size={20} class="menu-close" />
-        <span class="sr-only">{locale === 'es' ? 'Abrir menu' : 'Toggle menu'}</span>
+        <span class="sr-only">{menuLabel}</span>
       </button>
     </div>
   </div>
@@ -77,24 +82,24 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
 
 <SiteDrawer />
 
-<dialog class="search-dialog" data-search-dialog data-locale={locale} aria-label={locale === 'es' ? `Buscar en ${siteConfig.name}` : `Search ${siteConfig.name}`}>
+<dialog class="search-dialog" data-search-dialog data-locale={locale} aria-label={`${searchLabel} - ${siteConfig.name}`}>
   <form class="search-field" action={localePath(locale, "/search/")} method="get" role="search">
     <Icon name="search" size={19} class="t-faint" />
-    <label class="sr-only" for="site-search">{locale === 'es' ? 'Buscar videos' : 'Search videos'}</label>
+    <label class="sr-only" for="site-search">{searchLabel}</label>
     <input
       id="site-search"
       name="q"
       type="search"
-      placeholder={locale === 'es' ? 'Buscar videos...' : 'Search videos...'}
+      placeholder={searchPlaceholder}
       autocomplete="off"
       enterkeyhint="search"
       data-search-input
     />
-    <button type="button" class="icon-btn" aria-label={locale === 'es' ? 'Cerrar busqueda' : 'Close search'} data-search-close>
+    <button type="button" class="icon-btn" aria-label={closeLabel} data-search-close>
       <Icon name="close" size={18} />
     </button>
   </form>
-  <p class="search-status" aria-live="polite" data-search-status>{locale === 'es' ? 'Escribe para buscar en el archivo.' : 'Type to search the archive.'}</p>
+  <p class="search-status" aria-live="polite" data-search-status>{searchHint}</p>
   <div class="search-results" data-search-results></div>
 </dialog>
 
@@ -128,7 +133,7 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
   const input = dialog?.querySelector<HTMLInputElement>("[data-search-input]");
   const results = dialog?.querySelector<HTMLElement>("[data-search-results]");
   const status = dialog?.querySelector<HTMLElement>("[data-search-status]");
-  const isEs = dialog?.dataset.locale === "es";
+  const loc = dialog?.dataset.locale ?? "es";
 
   const render = async () => {
     const runtime = window.mailerSearch;
@@ -137,20 +142,21 @@ const isCurrent = (href: string) => path === href || (href !== "/" && path.start
     const query = input.value.trim();
     if (!query) {
       const items = await runtime.load();
-      status.textContent = isEs
-        ? `Buscar entre ${items.length} videos por titulo, categoria o autor.`
-        : `Search ${items.length} videos by title, topic, or writer.`;
+      const n = items.length;
+      status.textContent = loc === "es" ? `Buscar entre ${n} videos por titulo, categoria o autor.`
+        : loc === "it" ? `Cerca tra ${n} video per titolo, categoria o autore.`
+        : `Search ${n} videos by title, topic, or writer.`;
       results.innerHTML = "";
       return;
     }
 
     const matches = (await runtime.search(query)).slice(0, 8);
-    /* A slower query resolving after a faster one must not overwrite it. */
     if (input.value.trim() !== query) return;
 
-    status.textContent = isEs
-      ? `${matches.length} ${matches.length === 1 ? "resultado" : "resultados"} para "${query}".`
-      : `${matches.length} ${matches.length === 1 ? "result" : "results"} for "${query}".`;
+    const n = matches.length;
+    status.textContent = loc === "es" ? `${n} ${n === 1 ? "resultado" : "resultados"} para "${query}".`
+      : loc === "it" ? `${n} ${n === 1 ? "risultato" : "risultati"} per "${query}".`
+      : `${n} ${n === 1 ? "result" : "results"} for "${query}".`;
     results.innerHTML = matches.map(runtime.resultMarkup).join("");
   };
 
